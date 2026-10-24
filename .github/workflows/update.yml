@@ -1,0 +1,38 @@
+name: Update PortScope
+
+# Follows xiaoyuhen/portscope releases. Polling keeps the tap self-contained:
+# the app repository needs no token that can write here.
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Update the cask to the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/update-cask.sh
+
+      - name: Commit
+        run: |
+          if git diff --quiet; then
+            echo "Already current."
+            exit 0
+          fi
+          version="$(sed -n 's/^  version "\(.*\)"$/\1/p' Casks/portscope.rb)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "portscope ${version}"
+          git push
