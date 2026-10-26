@@ -1,6 +1,6 @@
 cask "feilo" do
-  version "0.1.1"
-  sha256 "c93d10f79d6be1a125ee2b6ff7e6c1cb870385bd1ae0259ede6ba9f0a0a6cbc9"
+  version "0.1.2"
+  sha256 "290d409fc87db769e54b4b7c97d62e5322e1a10a19f33fb3ee4b16b9e14992cf"
 
   url "https://github.com/xiaoyuhen/feilo-releases/releases/download/v#{version}/Feilo-#{version}.zip"
   name "Feilo"
